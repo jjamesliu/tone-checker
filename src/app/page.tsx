@@ -1,22 +1,28 @@
 "use client";
 
-import Image from "next/image";
+import { ArrowUp } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
-import { text } from "stream/consumers";
+
+
 export default function Home() {
   const [inputValue, setInputValue] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [isOneLine, setIsOneLine] = useState(true);
 
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const textarea = textareaRef.current;
 
   const autoResize = () => {
-    const textarea = textareaRef.current;
     if (textarea) {
       textarea.style.height = 'auto';
       const scrollHeight = textarea.scrollHeight;
       const maxHeight = 200;
+
+      console.log('ScrollHeight:', scrollHeight); // Debug log
+      setIsOneLine(scrollHeight <= 60); // Increased threshold
+
       if (scrollHeight <= maxHeight) {
         textarea.style.height = scrollHeight + 'px';
         textarea.style.overflowY = 'hidden';
@@ -60,15 +66,18 @@ export default function Home() {
       </div>
 
       <div className='pt-10'>
-        <div className={`search-field-wrapper ${isInputFocused ? "focused" : ""}`}>
+        <div className={`relative search-field-wrapper rounded-2xl ${isInputFocused ? "focused" : ""} ${isOneLine ? '!rounded-4xl' : ""} `}>
             <textarea
             ref={textareaRef}
-            className={`search-input ${isScrolling ? "scrolling" : ""}`}
+            className={`search-input py-[1rem] ${isOneLine ? 'w-[calc(100%-4rem)]' : "w-[calc(100%-1rem)] pb-12"} ${isScrolling ? "scrolling" : ""}`}
             value={inputValue}
             rows={1}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
             onChange={handleInputChange}/>
+            <ArrowUp className={`absolute bg-white text-black rounded-full h-9 w-9 p-2 ${isOneLine ? 'right-4 top-1/2 -translate-y-1/2 ': 'right-3 bottom-3 '}`}/>
+            <div className="laser-trace top"></div>
+            <div className="laser-trace bottom"></div>
         </div>
       </div>
 
