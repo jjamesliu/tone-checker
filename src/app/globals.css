@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #171717;
+  --foreground: #ffffff;
 }
 
 @theme inline {
@@ -12,15 +12,62 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.search-field-wrapper {
+  display: flex;
+  align-items:center;
+  max-width: 800px;
+  margin: auto auto;
+  border-radius: 20px; /* Rounded ends */
+  background: transparent;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  z-index: 1;
+  padding: 0 1rem;   
+}
+
+.search-field-wrapper.focused {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.search-input {          
+  width: 100%;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: 'Geist Mono', monospace;
+  resize: none;
+  overflow: hidden;
+  padding: 1rem 0;    
+}
+
+.search-input::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search-input::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Default state - completely transparent */
+.search-input::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 30px;
+}
+
+/* Only show scrollbar when scrolling */
+.search-input.scrolling::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+
 }
