@@ -19,8 +19,6 @@ body {
 }
 
 .search-field-wrapper {
-  display: flex;
-  align-items:center;
   max-width: 800px;
   margin: auto auto;
   background: transparent;
@@ -30,7 +28,6 @@ body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
   z-index: 1;
-  padding: 0 1rem;   
 }
 
 .search-field-wrapper.focused {
