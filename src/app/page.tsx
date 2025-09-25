@@ -3,6 +3,7 @@
 import { ArrowUp } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import {TypeAnimation} from 'react-type-animation';
+import { text } from 'stream/consumers';
 
 export default function Home() {
   const [inputValue, setInputValue] = useState('');
@@ -12,13 +13,14 @@ export default function Home() {
 
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const textarea = textareaRef.current;
+
+
   const autoResize = () => {
- // Move this inside the function
+
+   const textarea = textareaRef.current;
     if (textarea) {
       // Reset height to auto first to get accurate scrollHeight
-      textarea.style.height = 'auto';
-      
+      textarea.style.height = 'auto';      
       const scrollHeight = textarea.scrollHeight;
       const maxHeight = 400;
       
@@ -47,13 +49,9 @@ export default function Home() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
-    // Use setTimeout to ensure the value is updated before resize
-    setTimeout(autoResize, 0);
   };
 
   useEffect(() => {
-    autoResize();
-
     const textarea = textareaRef.current;
     if (!textarea) return;
 
@@ -77,9 +75,9 @@ export default function Home() {
   }, [inputValue]);
 
   return (
-    <div className='text-center pt-20 max-w-[80%] mx-auto'>
+    <div className='text-center pt-40 max-w-[80%] mx-auto'>
       <div className='space-y-5'>
-        <h1 className='font-[700] text-5xl'>Tone Check<br/>Analyzer</h1>
+        <h1 className='font-[700] text-5xl'>Tone Analyzer</h1>
         <p className='mx-auto text-md text-gray-400/80 max-w-170'>
           Analyze your emails and messages for tone, clarity, and professionalism. Get insights before you send to avoid miscommunication.
         </p>
@@ -87,6 +85,7 @@ export default function Home() {
 
       <div className='pt-10'>
         <div className={`flex items-center px-5 relative search-field-wrapper rounded-4xl ${isInputFocused ? "focused" : ""} ${!isOneLine ? '!rounded-2xl !items-end !pb-3' : ""}`}>
+
           {/* TypeAnimation placeholder */}
           {!inputValue && !isInputFocused && (
             <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400/70 font-mono z-10">
@@ -107,8 +106,6 @@ export default function Home() {
             </div>
           )}
           
-
-
             <textarea
                 ref={textareaRef}
                 className={`search-input py-[1rem] pr-6 w-full ${isScrolling ? "scrolling" : ""}`}
@@ -117,9 +114,9 @@ export default function Home() {
                 onFocus={() => setIsInputFocused(true)}
                 onBlur={() => setIsInputFocused(false)}
                 onChange={handleInputChange}
-                style={{ minHeight: '24px' }} // Ensure minimum height
               />
-            {/* Button wrapper */}
+
+
             <button className="bg-white text-black rounded-full h-9 w-9 p-2 hover:bg-gray-200 transition-colors flex items-center justify-center ">
               <ArrowUp size={16} />
             </button>
