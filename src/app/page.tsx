@@ -1,9 +1,9 @@
 "use client";
 
-import { ArrowUp } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { ArrowUp, Plus, X } from 'lucide-react';
+import { useState, useEffect, useRef, use } from 'react';
 import {TypeAnimation} from 'react-type-animation';
-import { text } from 'stream/consumers';
+import ToneButton from '@/app/components/ToneButton';
 
 export default function Home() {
   const [inputValue, setInputValue] = useState('');
@@ -13,6 +13,30 @@ export default function Home() {
 
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Tone Selection States
+  const [selectedTones, setSelectedTones] = useState<string[]>([]);
+  const [customTone, setCustomTone] = useState(""); //custom tone input state
+  const [showCustomInput, setShowCustomInput] = useState(false); //toggle custom input field
+  const tones = [
+    {id: "formal", label:"Formal"},
+    {id: "professional-business", label:"Professional/Business"},
+    {id: "academic", label:"Academic"},
+    {id: "casual", label:"Casual"},
+    {id: "polite", label:"Polite/Courteous"},
+    {id: "friendly", label:"Friendly/Warm"},
+  ];
+
+
+  const handleToneToggle = (tone: string) => {
+    setSelectedTones(prev => (
+      prev.includes(tone) ? prev.filter(t => t !== tone) : [...prev, tone]
+    ));
+  };
+
+  const handleCustomToneClick = () => {
+    setShowCustomInput(true);
+  }
 
 
   const autoResize = () => {
@@ -78,7 +102,7 @@ export default function Home() {
     <div className='text-center pt-40 max-w-[80%] mx-auto'>
       <div className='space-y-5'>
         <h1 className='font-[700] text-5xl'>Tone Analyzer</h1>
-        <p className='mx-auto text-md text-gray-400/80 max-w-170'>
+        <p className='mx-auto text-md text-gray-400 max-w-170'>
           Analyze your emails and messages for tone, clarity, and professionalism. Get insights before you send to avoid miscommunication.
         </p>
       </div>
@@ -125,6 +149,45 @@ export default function Home() {
           <div className="laser-trace top"></div>
           <div className="laser-trace bottom"></div>
 
+        </div>
+      </div>
+
+      <div className='flex flex-col gap-5 mt-10 max-w-200 mx-auto'>
+        <h2 className='font-bold text-left'>Select Expected Tone(s): </h2>
+        <div className='flex flex-row gap-3 mx-auto flex-wrap justify-center'>
+          {tones.map(tone => (
+              <ToneButton key={tone.id}
+              tone={tone.id}
+              selected={selectedTones.includes(tone.id)}
+              onClick={handleToneToggle}>
+                {tone.label}
+              </ToneButton>
+          ))}
+        </div>
+        <div className='flex justify-center'>
+          {!showCustomInput ? (
+              <ToneButton key="custom"
+              icon={Plus}
+              tone="custom"
+              selected={selectedTones.includes("custom")}
+              onClick={handleCustomToneClick}>
+                Add Custom Tone
+              </ToneButton>
+            ): (
+              <div className='flex flex-row items-center gap-2 text-sm'>
+                <input type="text"
+                className="border border-white/15 rounded-2xl px-4 py-2 focus:outline-none "
+                placeholder="Enter Custom Tone"
+                value={customTone}
+                onChange={(e) => setCustomTone(e.target.value)}
+                onBlur={() => setShowCustomInput(false)}
+                autoFocus
+                />
+                <button className=' button-primary !bg-white !text-black'>
+                  Add Tone
+                </button>
+              </div>
+            )}
         </div>
       </div>
     </div>
