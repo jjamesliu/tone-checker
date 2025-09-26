@@ -13,7 +13,7 @@ export default function ToneButton({ tone, selected, onClick, children, icon: Ic
     return (
     <button onClick={() => onClick(tone)}
     data-selected={selected}
-    className="button-primary">
+    className={`button-primary ${selected ? "!bg-green-500/80 !text-white" : ""}`}>
         {Icon && <Icon size={16}/>}
         {children}
     </button>
