@@ -4,6 +4,7 @@ import { ArrowUp, Plus, X } from 'lucide-react';
 import { useState, useEffect, useRef, use } from 'react';
 import {TypeAnimation} from 'react-type-animation';
 import ToneButton from '@/app/components/ToneButton';
+import { tones, Tone } from '@/app/lib/tones';
 
 export default function Home() {
   const [inputValue, setInputValue] = useState('');
@@ -15,17 +16,10 @@ export default function Home() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Tone Selection States
+  const [allTones, setAllTones] = useState<Tone[]>(tones);
   const [selectedTones, setSelectedTones] = useState<string[]>([]);
   const [customTone, setCustomTone] = useState(""); //custom tone input state
   const [showCustomInput, setShowCustomInput] = useState(false); //toggle custom input field
-  const tones = [
-    {id: "formal", label:"Formal"},
-    {id: "professional-business", label:"Professional/Business"},
-    {id: "academic", label:"Academic"},
-    {id: "casual", label:"Casual"},
-    {id: "polite", label:"Polite/Courteous"},
-    {id: "friendly", label:"Friendly/Warm"},
-  ];
 
 
   const handleToneToggle = (tone: string) => {
@@ -36,6 +30,19 @@ export default function Home() {
 
   const handleCustomToneClick = () => {
     setShowCustomInput(true);
+  }
+
+  const handleCustomToneAddClick = () => {
+    if (customTone.trim()) {
+      const newTone: Tone = {id: customTone.trim().toLowerCase().replace(/\s+/g, '-'), label: customTone.trim()};
+      const toneExists = allTones.some(t => t.id === newTone.id);
+      if (!toneExists) {
+        setAllTones(prev => [...prev, newTone]);
+        setSelectedTones(prev => [...prev, newTone.id]);
+        setCustomTone("");
+        setShowCustomInput(false);
+      }
+    }
   }
 
 
@@ -75,6 +82,7 @@ export default function Home() {
     setInputValue(e.target.value);
   };
 
+
   useEffect(() => {
     const textarea = textareaRef.current;
     if (!textarea) return;
@@ -97,6 +105,12 @@ export default function Home() {
   useEffect(() => {
     autoResize();
   }, [inputValue]);
+
+  //Debugging
+  useEffect(()=>{
+    console.log("this is selected tones: ", selectedTones);
+    console.log("this is all tones: ", allTones);
+  }, [selectedTones, allTones]);
 
   return (
     <div className='text-center pt-40 max-w-[80%] mx-auto'>
@@ -155,7 +169,7 @@ export default function Home() {
       <div className='flex flex-col gap-5 mt-10 max-w-200 mx-auto'>
         <h2 className='font-bold text-left'>Select Expected Tone(s): </h2>
         <div className='flex flex-row gap-3 mx-auto flex-wrap justify-center'>
-          {tones.map(tone => (
+          {allTones.map(tone => (
               <ToneButton key={tone.id}
               tone={tone.id}
               selected={selectedTones.includes(tone.id)}
@@ -181,9 +195,16 @@ export default function Home() {
                 value={customTone}
                 onChange={(e) => setCustomTone(e.target.value)}
                 onBlur={() => setShowCustomInput(false)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleCustomToneAddClick();
+                  }
+                }}
                 autoFocus
                 />
-                <button className=' button-primary !bg-white !text-black'>
+                <button className=' button-primary !bg-white !text-black'
+                onMouseDown={handleCustomToneAddClick}>
                   Add Tone
                 </button>
               </div>
