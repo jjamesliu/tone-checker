@@ -1,6 +1,6 @@
 "use client";
-
-import { ArrowUp, Plus, X } from 'lucide-react';
+import Login from '@/app/components/Login';
+import { ArrowUp, Plus, Target } from 'lucide-react';
 import { useState, useEffect, useRef, use } from 'react';
 import {TypeAnimation} from 'react-type-animation';
 import ToneButton from '@/app/components/ToneButton';
@@ -21,6 +21,10 @@ export default function Home() {
   const [customTone, setCustomTone] = useState(""); //custom tone input state
   const [showCustomInput, setShowCustomInput] = useState(false); //toggle custom input field
 
+  const handleClickAwayCustom =  () => {
+    setShowCustomInput(false);
+    setCustomTone('');
+  }
 
   const handleToneToggle = (tone: string) => {
     setSelectedTones(prev => (
@@ -113,6 +117,8 @@ export default function Home() {
   }, [selectedTones, allTones]);
 
   return (
+    <>
+    <div className='p-4 flex flex-row justify-end'><Login/></div>
     <div className='text-center pt-40 max-w-[80%] mx-auto'>
       <div className='space-y-5'>
         <h1 className='font-[700] text-5xl'>Tone Analyzer</h1>
@@ -167,7 +173,10 @@ export default function Home() {
       </div>
 
       <div className='flex flex-col gap-5 mt-10 max-w-200 mx-auto'>
-        <h2 className='font-bold text-left'>Select Expected Tone(s): </h2>
+        <div className='items-center flex flex-row gap-2'>
+          <Target size={16}/> 
+          <span className='font-bold text-left'>Select Expected Tone(s):</span>
+        </div>
         <div className='flex flex-row gap-3 mx-auto flex-wrap justify-center'>
           {allTones.map(tone => (
               <ToneButton key={tone.id}
@@ -194,7 +203,7 @@ export default function Home() {
                 placeholder="Enter Custom Tone"
                 value={customTone}
                 onChange={(e) => setCustomTone(e.target.value)}
-                onBlur={() => setShowCustomInput(false)}
+                onBlur={() => handleClickAwayCustom()}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     e.preventDefault();
@@ -212,5 +221,6 @@ export default function Home() {
         </div>
       </div>
     </div>
+    </>
   );
 }
