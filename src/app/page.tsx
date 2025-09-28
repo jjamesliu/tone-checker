@@ -1,10 +1,12 @@
 "use client";
-import Login from '@/app/components/Login';
+import LoginButton from '@/app/components/LoginButton';
 import { ArrowUp, Plus, Target } from 'lucide-react';
 import { useState, useEffect, useRef, use } from 'react';
 import {TypeAnimation} from 'react-type-animation';
 import ToneButton from '@/app/components/ToneButton';
 import { tones, Tone } from '@/app/lib/tones';
+
+import Link from 'next/link';
 
 export default function Home() {
   const [inputValue, setInputValue] = useState('');
@@ -118,7 +120,9 @@ export default function Home() {
 
   return (
     <>
-    <div className='p-4 flex flex-row justify-end'><Login/></div>
+    <div className='p-4 flex flex-row justify-end'>
+      <Link href='/login'><LoginButton/></Link>
+    </div>
     <div className='text-center pt-40 max-w-[80%] mx-auto'>
       <div className='space-y-5'>
         <h1 className='font-[700] text-5xl'>Tone Analyzer</h1>
