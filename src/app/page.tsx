@@ -1,7 +1,7 @@
 "use client";
 import LoginButton from '@/app/components/LoginButton';
 import { ArrowUp, Plus, Target } from 'lucide-react';
-import { useState, useEffect, useRef, use } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {TypeAnimation} from 'react-type-animation';
 import ToneButton from '@/app/components/ToneButton';
 import { tones, Tone } from '@/app/lib/tones';
