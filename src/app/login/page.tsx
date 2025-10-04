@@ -1,3 +1,4 @@
+"use client"
 import {
   Card,
   CardAction,
@@ -8,14 +9,64 @@ import {
   CardTitle,
 } from "@/app/components/ui/card";
 
+import {useState, useEffect} from 'react';
+
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 
 import { MoveLeft } from 'lucide-react';
+import React from "react";
 
 export default function Login() {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+    const [apiResponse, setApiResponse] = useState('');
+
+    const router = useRouter();
+
+    const handleSubmit = async (e:React.FormEvent) => {
+        e.preventDefault();
+        console.log("Form Submit Button Clicked: ", formData);
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+            const data = await response.json();
+            setApiResponse(data.message);
+            if (data.message.includes("successful")) {
+                setFormData({
+                    email: '',
+                    password: ''
+                });
+                setTimeout(() => {
+                    router.push('/');
+                }, 1500);
+            }
+
+        } catch (error) {
+            console.log("Error occuring in login page when fetching api/login: ", error);
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {id, value} = e.target;
+        setFormData(prev => ({...prev, [id]: value}))
+    }
+
+    // debugging useEffect to see formData changes
+    useEffect(() => {
+        console.log(formData);
+    }, [formData]);
+
     return (
         <div className='min-h-screen flex items-center justify-center px-8'>
             <Card className="w-full max-w-[450px] ">
@@ -33,7 +84,7 @@ export default function Login() {
             </CardHeader>
 
             <CardContent>
-                <form>
+                <form id="login-form" onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6">
                     <div className="grid gap-2">
                     <Label htmlFor="email">Email Address</Label>
@@ -41,6 +92,7 @@ export default function Login() {
                         id="email"
                         type="email"
                         placeholder="Enter your email"
+                        onChange={handleChange}
                         required
                     />
                     </div>
@@ -54,15 +106,20 @@ export default function Login() {
                         Forgot your password?
                         </a>
                     </div>
-                    <Input id="password" type="password" placeholder="Enter your password" required />
+                    <Input id="password" type="password" placeholder="Enter your password" onChange={handleChange} required />
                     </div>
                 </div>
                 </form>
             </CardContent>
             <CardFooter className="flex-col gap-2">
-                <button className="w-full bg-black text-white hover:opacity-80 transition-all duration-300 rounded-xl py-1.5 cursor-pointer">
+                <button type="submit" form="login-form" className="w-full bg-black text-white hover:opacity-80 transition-all duration-300 rounded-xl py-1.5 cursor-pointer">
                 Sign in
                 </button>
+                {apiResponse && (
+                    <span className={`text-center text-sm mt-2 ${apiResponse.includes("successful") ? 'text-green-600': 'text-red-600'}`}>
+                        {apiResponse} 
+                    </span>
+                )}
                 <div className="w-full"> 
                     <div className="flex items-center ">
                         <div className="flex-grow h-px bg-gray-400"></div>
