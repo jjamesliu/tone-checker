@@ -121,7 +121,7 @@ export default function Home() {
   return (
     <>
     <div className='p-4 flex flex-row justify-end'>
-      <Link href='/login'><LoginButton/></Link>
+      <LoginButton/>
     </div>
     <div className='text-center pt-40 max-w-[80%] mx-auto'>
       <div className='space-y-5'>

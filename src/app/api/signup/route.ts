@@ -50,10 +50,10 @@ export async function POST(request: Request) {
     if (!result.acknowledged) {
         return NextResponse.json({ message: "Error creating user MongoDB issue. Please try again." }, {status: 500});
     } else {
+        
         return NextResponse.json(
             { 
             message: "User created successfully.",
-            userId: result.insertedId, 
             email: newUser.email,
             name: newUser.name 
             },

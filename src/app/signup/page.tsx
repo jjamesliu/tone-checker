@@ -18,8 +18,11 @@ import { Label } from "@/app/components/ui/label";
 import { MoveLeft } from 'lucide-react';
 
 import {useState} from 'react';
+import {useAuth} from '@/app/context/AuthContext';
 
 export default function Login() {
+    const {user, login} = useAuth();
+
     const router = useRouter();
 
     const [formData, setFormData] = useState({
@@ -49,6 +52,8 @@ export default function Login() {
             });
             
             const data = await response.json();
+            login({name: data.name, email:data.email});
+            // console.log("raw response data: ", data); //debugging
 
             if (data.message.includes("successfully")) {
                 setFormData({

@@ -23,8 +23,13 @@ export async function POST(request: Request) {
             return NextResponse.json({message: "Invalid email or password. Please try again."}, {status: 401});
         }
 
+        //if passess everything then
         return NextResponse.json(
-            { message: `Login successful! Welcome back, ${user.name}`},
+            { 
+            message: `Login successful! Welcome back, ${user.name}.`,
+            name: user.name,
+            email: user.email
+            },
             { status: 200}
         );
 

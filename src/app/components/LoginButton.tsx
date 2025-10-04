@@ -1,12 +1,28 @@
 import { useState } from 'react';
+import {useAuth} from '@/app/context/AuthContext';
+import Link from 'next/link';
+
 
 export default function Login() {
-    const [loginStatus, setLoginStatus] = useState(false);
+    const {user, login, logout, isLoading} = useAuth();
+
+    if (user) {
+        return (
+        <div>
+            <button className='button-login' onClick={logout}>
+                {user.name}
+            </button>
+        </div>
+        )
+    }
+
     return (
         <div>
-            <button className='button-login'>
-                {loginStatus ? "Logout" : "Login"}
-            </button>
+            <Link href='/login'>
+                <button className='button-login'>
+                    Login
+                </button>
+            </Link>
         </div>
     )
 }

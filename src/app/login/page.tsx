@@ -20,7 +20,11 @@ import { Label } from "@/app/components/ui/label";
 import { MoveLeft } from 'lucide-react';
 import React from "react";
 
+import {useAuth} from '@/app/context/AuthContext';
+
 export default function Login() {
+    const {login} = useAuth();
+
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -42,15 +46,17 @@ export default function Login() {
             });
             const data = await response.json();
             setApiResponse(data.message);
+            
             // console.log(data.message); // for debugging
             if (data.message.includes("successful")) {
+                login({name: data.name, email:data.email});
                 setFormData({
                     email: '',
                     password: ''
                 });
                 setTimeout(() => {
                     router.push('/');
-                }, 1500);
+                }, 1000);
             }
 
         } catch (error) {

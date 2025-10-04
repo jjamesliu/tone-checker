@@ -8,3 +8,8 @@ export interface User {
     createdAt?: Date;
     updatedAt?: Date;
 }
+
+export interface UserDisplay {
+    email: string;
+    name: string;
+}
