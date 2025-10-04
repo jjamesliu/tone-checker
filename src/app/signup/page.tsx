@@ -38,7 +38,7 @@ export default function Login() {
 
     const handleSubmit = async (e:React.FormEvent) => {
         e.preventDefault();
-        console.log("Form Data Submit Button Clicked: ", formData);
+        // console.log("Form Data Submit Button Clicked: ", formData); //for debugging
         try {
             const response = await fetch('/api/signup', {
                 method: 'POST',

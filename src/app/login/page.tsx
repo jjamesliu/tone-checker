@@ -31,7 +31,7 @@ export default function Login() {
 
     const handleSubmit = async (e:React.FormEvent) => {
         e.preventDefault();
-        console.log("Form Submit Button Clicked: ", formData);
+        // console.log("Form Submit Button Clicked: ", formData); //debugging
         try {
             const response = await fetch('/api/login', {
                 method: 'POST',
@@ -42,6 +42,7 @@ export default function Login() {
             });
             const data = await response.json();
             setApiResponse(data.message);
+            // console.log(data.message); // for debugging
             if (data.message.includes("successful")) {
                 setFormData({
                     email: '',
@@ -53,7 +54,7 @@ export default function Login() {
             }
 
         } catch (error) {
-            console.log("Error occuring in login page when fetching api/login: ", error);
+            console.error("Error occuring in login page when fetching api/login: ", error);
         }
     };
 
@@ -63,9 +64,9 @@ export default function Login() {
     }
 
     // debugging useEffect to see formData changes
-    useEffect(() => {
-        console.log(formData);
-    }, [formData]);
+    // useEffect(() => {
+    //     console.log(formData);
+    // }, [formData]);
 
     return (
         <div className='min-h-screen flex items-center justify-center px-8'>
