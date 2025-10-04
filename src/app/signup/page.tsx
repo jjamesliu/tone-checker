@@ -77,7 +77,7 @@ export default function Login() {
         <div className='relative min-h-screen w-full flex items-center justify-center rounded-xl'>
             <div className='max-w-[450px] w-full flex flex-col bg-[#e0e0e0] rounded-xl border-b border-black'>
                 <Card className="w-full border-0">
-                <div className='ml-4 text-[13px] text-black hover:text-gray-500 transition-all duration-300 cursor-pointer'>
+                <div className='w-fit ml-4 text-[13px] text-black hover:text-gray-500 transition-all duration-300 cursor-pointer'>
                     <Link href='/' className='flex items-center gap-1'>
                         <MoveLeft size={16}/>
                         <span>Back To Home</span>
