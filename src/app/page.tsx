@@ -1,4 +1,15 @@
 "use client";
+
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
+
 import LoginButton from '@/app/components/LoginButton';
 import { ArrowUp, Plus, Target } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
@@ -6,7 +17,7 @@ import {TypeAnimation} from 'react-type-animation';
 import ToneButton from '@/app/components/ToneButton';
 import { tones, Tone } from '@/app/lib/tones';
 
-import Link from 'next/link';
+import { Upload } from 'lucide-react';
 
 export default function Home() {
   const [inputValue, setInputValue] = useState('');
@@ -223,6 +234,36 @@ export default function Home() {
               </div>
             )}
         </div>
+
+        <div className='my-8 font-bold'>
+          <div className="w-full mb-10"> 
+              <div className="flex items-center ">
+                  <div className="flex-grow h-px bg-gray-400"></div>
+                  <span className="px-3 text-sm">or</span>
+                  <div className="flex-grow h-px bg-gray-400"></div>
+              </div>
+          </div>
+          
+          <Card variant="dark">
+            <div className='text-left space-y-1'>
+              <h1 className='text-xl'>Upload Email Template</h1>
+              <p className='text-sm text-gray-400 font-medium'>Drag and drop your .txt file or click to browse</p>
+            </div>
+
+            <div className='bg-black py-18 rounded-xl border-2  border-dotted border-white/20 hover:border-white/70 transition-all duration-300'>
+              <div className='mx-auto text-sm space-y-5'>
+                <div className='mx-auto rounded-full w-fit p-4 bg-white'>
+                  <Upload className='text-black'/>
+                </div>
+                <div className=''>
+                  <p className='font-[600]'>Drop Your File Here</p>
+                  <p className='text-gray-500 font-[500]'>or click to browse</p>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+
       </div>
     </div>
     </>
