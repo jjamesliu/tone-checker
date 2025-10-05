@@ -11,7 +11,7 @@ import {
 } from "@/app/components/ui/card";
 
 import LoginButton from '@/app/components/LoginButton';
-import { ArrowUp, Plus, Target } from 'lucide-react';
+import { ArrowUp, Plus, Target, Check, FileText, X } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import {TypeAnimation} from 'react-type-animation';
 import ToneButton from '@/app/components/ToneButton';
@@ -100,7 +100,27 @@ export default function Home() {
   };
 
   //handling the .txt file dropping functions
+  const [uploadStatus, setUploadStatus] = useState<'idle' | 'success'| 'error'>('idle');
+  const [fileName, setFileName] = useState<string>('');
+  const [fileContent, setFileContent] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const processFile = async (file: File) => {
+    if (!file.name.endsWith('.txt')) {
+      setUploadStatus('error');
+      return
+    }
+
+    setFileName(file.name)
+    try {
+      const content = await file.text()
+      setInputValue(content);
+      setFileContent(content);
+      setUploadStatus('success');
+    } catch (error) {
+      console.log("there was an error parsing the file.text content");
+    }
+  }
 
   const handleFileClick = () => {
     fileInputRef.current?.click()
@@ -110,6 +130,7 @@ export default function Home() {
     e.preventDefault();
     const file = e.dataTransfer.files?.[0]
     if (file) {
+      processFile(file);
       console.log("the dropped file is: ", file)
     }
   }
@@ -121,11 +142,16 @@ export default function Home() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
+      processFile(file);
       console.log("a new file has been added: ", file)
     }
   }
 
-
+  //debugging for file handling
+  // useEffect(() => {
+  //   console.log("the file name is: ", fileName);
+  //   console.log("the file content is ", fileContent);
+  // }, [fileContent])
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -289,13 +315,40 @@ export default function Home() {
             onDragOver={handleDragOver}
             className='bg-black py-18 rounded-xl border-2  border-dotted border-white/20 hover:border-white/70 cursor-pointer transition-all duration-300'>
               <div className='mx-auto text-sm space-y-5'>
-                <div className='mx-auto rounded-full w-fit p-4 bg-white'>
-                  <Upload className='text-black'/>
-                </div>
-                <div className=''>
-                  <p className='font-[600]'>Drop Your File Here</p>
-                  <p className='text-gray-500 font-[500]'>or click to browse</p>
-                </div>
+                {uploadStatus && uploadStatus == 'idle' ? 
+                <>
+                  <div className='mx-auto rounded-full w-fit p-4 bg-white'>
+                    <Upload className='text-black'/>
+                  </div>
+                  <div className=''>
+                    <p className='font-[600]'>Drop Your File Here</p>
+                    <p className='text-gray-500 font-[500]'>or click to browse</p>
+                  </div>
+                </> : uploadStatus == 'success' ?
+                <>
+                  <div className='mx-auto rounded-full w-fit p-4 bg-green-300'>
+                    <Check className='text-black'/>
+                  </div>
+                  <div className='space-y-1'>
+                    <p className='font-[600]'>File Uploaded Successfully</p>
+                    <div className='flex items-center justify-center text-gray-500 gap-1'>
+                      <FileText size={16}/>
+                      <p className='font-[500]'>{fileName}</p>
+                    </div>
+                  </div>
+                </> :
+                <>
+                  <div className='mx-auto rounded-full w-fit p-4 bg-red-500'>
+                    <X className='text-black'/>
+                  </div>
+                  <div className='space-y-1'>
+                    <p className='font-[600]'>Please Import a .txt file</p>
+                    <div className='flex items-center justify-center text-gray-500 gap-1'>
+                      <p className='font-[500]'>There was an error. Try again</p>
+                    </div>
+                  </div>
+                </>
+              }
               </div>
             </div>
 
