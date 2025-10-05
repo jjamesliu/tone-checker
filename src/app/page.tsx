@@ -99,6 +99,33 @@ export default function Home() {
     setInputValue(e.target.value);
   };
 
+  //handling the .txt file dropping functions
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0]
+    if (file) {
+      console.log("the dropped file is: ", file)
+    }
+  }
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      console.log("a new file has been added: ", file)
+    }
+  }
+
+
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -250,7 +277,17 @@ export default function Home() {
               <p className='text-sm text-gray-400 font-medium'>Drag and drop your .txt file or click to browse</p>
             </div>
 
-            <div className='bg-black py-18 rounded-xl border-2  border-dotted border-white/20 hover:border-white/70 transition-all duration-300'>
+            {/*This is where the user drops*/}
+            <input ref={fileInputRef}
+            type="file"
+            onChange={handleFileChange}
+            className="hidden"
+            accept=".txt"
+            />
+            <div onClick={handleFileClick}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            className='bg-black py-18 rounded-xl border-2  border-dotted border-white/20 hover:border-white/70 cursor-pointer transition-all duration-300'>
               <div className='mx-auto text-sm space-y-5'>
                 <div className='mx-auto rounded-full w-fit p-4 bg-white'>
                   <Upload className='text-black'/>
@@ -261,6 +298,8 @@ export default function Home() {
                 </div>
               </div>
             </div>
+
+
           </Card>
         </div>
 
