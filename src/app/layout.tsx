@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tone Checker",
+  title: "Tone Analyzer",
   description: "Analyze the tone of your emails and adapt it to your needs",
 };
 

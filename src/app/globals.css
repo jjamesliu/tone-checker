@@ -131,3 +131,13 @@ body {
   to { transform: scaleX(0.75); }
 }
 
+button {
+  @apply cursor-pointer;
+}
+
+.glass-effect {
+  box-shadow: 
+  inset 0px 0px 50px -40px rgba(255, 255, 255, 0.1);  /* Top shadow */
+
+  @apply bg-transparent backdrop-blur-lg
+}

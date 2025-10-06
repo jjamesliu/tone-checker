@@ -11,13 +11,13 @@ import {
 } from "@/app/components/ui/card";
 
 import LoginButton from '@/app/components/LoginButton';
-import { ArrowUp, Plus, Target, Check, FileText, X, FileInput } from 'lucide-react';
+import { ArrowUp, Plus, Target, Check, FileText, X, FileInput, Upload } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import {TypeAnimation} from 'react-type-animation';
 import ToneButton from '@/app/components/ToneButton';
 import { tones, Tone } from '@/app/lib/tones';
 
-import { Upload } from 'lucide-react';
+import Navbar from '@/app/components/Navbar';
 
 export default function Home() {
   const [inputValue, setInputValue] = useState('');
@@ -191,8 +191,8 @@ export default function Home() {
 
   return (
     <>
-    <div className='p-4 flex flex-row justify-end'>
-      <LoginButton/>
+    <div>
+      <Navbar/>
     </div>
     <div className='text-center pt-40 max-w-[80%] mx-auto'>
       <div className='space-y-5'>
