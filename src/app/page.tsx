@@ -11,7 +11,7 @@ import {
 } from "@/app/components/ui/card";
 
 import LoginButton from '@/app/components/LoginButton';
-import { ArrowUp, Plus, Target, Check, FileText, X } from 'lucide-react';
+import { ArrowUp, Plus, Target, Check, FileText, X, FileInput } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import {TypeAnimation} from 'react-type-animation';
 import ToneButton from '@/app/components/ToneButton';
@@ -104,6 +104,7 @@ export default function Home() {
   const [fileName, setFileName] = useState<string>('');
   const [fileContent, setFileContent] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const processFile = async (file: File) => {
     if (!file.name.endsWith('.txt')) {
@@ -137,6 +138,12 @@ export default function Home() {
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
+    setIsDragging(true);
+  }
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -290,7 +297,7 @@ export default function Home() {
 
         <div className='my-8 font-bold'>
           <div className="w-full mb-10"> 
-              <div className="flex items-center ">
+              <div className="flex items-center  ">
                   <div className="flex-grow h-px bg-gray-400"></div>
                   <span className="px-3 text-sm">or</span>
                   <div className="flex-grow h-px bg-gray-400"></div>
@@ -313,10 +320,13 @@ export default function Home() {
             <div onClick={handleFileClick}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
-            className='bg-black py-18 rounded-xl border-2  border-dotted border-white/20 hover:border-white/70 cursor-pointer transition-all duration-300'>
+            onDragLeave={handleDragLeave}
+            className='bg-black py-18 rounded-xl border-2  border-dotted border-white/40 hover:border-white/80 cursor-pointer transition-all duration-300'>
               <div className='mx-auto text-sm space-y-5'>
                 {uploadStatus && uploadStatus == 'idle' ? 
                 <>
+                  {!isDragging ?
+                  <>
                   <div className='mx-auto rounded-full w-fit p-4 bg-white'>
                     <Upload className='text-black'/>
                   </div>
@@ -324,7 +334,20 @@ export default function Home() {
                     <p className='font-[600]'>Drop Your File Here</p>
                     <p className='text-gray-500 font-[500]'>or click to browse</p>
                   </div>
-                </> : uploadStatus == 'success' ?
+                  </>
+                  : 
+                  <>
+                  <div className='mx-auto rounded-xl w-fit p-4 bg-white'>
+                    <FileInput className='text-black'/>
+                  </div>
+                  <div>
+                    Drag and Drop Your File Here...
+                  </div>
+                  </>
+                  }
+                </> 
+
+                : uploadStatus == 'success' ?
                 <>
                   <div className='mx-auto rounded-full w-fit p-4 bg-green-300'>
                     <Check className='text-black'/>
@@ -336,7 +359,8 @@ export default function Home() {
                       <p className='font-[500]'>{fileName}</p>
                     </div>
                   </div>
-                </> :
+                </> 
+                : //Error handling
                 <>
                   <div className='mx-auto rounded-full w-fit p-4 bg-red-500'>
                     <X className='text-black'/>
