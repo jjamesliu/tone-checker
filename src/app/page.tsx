@@ -1,7 +1,7 @@
 "use client";
 
 import FileUpload from '@/app/components/FileUpload'
-import { ArrowUp, Plus, Target, Check, FileText, X, FileInput, Upload } from 'lucide-react';
+import { ArrowUp, Plus, Target} from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import {TypeAnimation} from 'react-type-animation';
 import ToneButton from '@/app/components/ToneButton';
@@ -90,28 +90,8 @@ export default function Home() {
   };
 
   //handling the .txt file dropping functions
-  const [uploadStatus, setUploadStatus] = useState<'idle' | 'success'| 'error'>('idle');
   const [fileName, setFileName] = useState<string>('');
   const [fileContent, setFileContent] = useState<string>('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-
-  const processFile = async (file: File) => {
-    if (!file.name.endsWith('.txt')) {
-      setUploadStatus('error');
-      return
-    }
-
-    setFileName(file.name)
-    try {
-      const content = await file.text()
-      setInputValue(content);
-      setFileContent(content);
-      setUploadStatus('success');
-    } catch (error) {
-      console.log("there was an error parsing the file.text content");
-    }
-  }
 
   const handleFileUpload = (content: string, name: string) => {
     setInputValue(content);
