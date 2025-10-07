@@ -135,7 +135,7 @@ export default function Login() {
                     </div>
                 </div>
                 <Link href='/signup' className="w-full border border-gray-300 rounded-xl py-[4px] cursor-pointer hover:bg-black/5 transition-all duration-300">
-                Don't have an account? Sign up
+                Don&apos;t have an account? Sign up
                 </Link>
                 <div className='my-2'>
                     <button className='text-[#848484] font-md text-sm hover:underline hover:text-black transition-all duration-300  cursor-pointer'>Forgot Your Pasword?</button>

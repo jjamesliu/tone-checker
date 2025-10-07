@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import {useAuth} from '@/app/context/AuthContext';
 import Link from 'next/link';
 
 
 export default function Login() {
-    const {user, login, logout, isLoading} = useAuth();
+    const {user, logout } = useAuth();
 
     if (user) {
         return (
